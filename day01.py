@@ -5,7 +5,7 @@ def part1(input):
     increased = 0
     last_value = 1000000 # max value in input: 10000
 
-    for value in read_input(1, input, int):
+    for [value] in read_input(1, input, [int]):
         if value > last_value:
             increased += 1
         last_value = value
@@ -18,7 +18,7 @@ def part2(input):
     last_sum = 30000
     index = 0
 
-    for partial_value in read_input(1, input, int):
+    for [partial_value] in read_input(1, input, [int]):
         moving_sum[index % 3] = partial_value
         index += 1
         current_sum = sum(moving_sum)
