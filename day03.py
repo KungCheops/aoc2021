@@ -53,10 +53,7 @@ def get_rating(numbers, method):
 
 
 def part2(input):
-    all_numbers = []
-
-    for [number] in read_input(3, input, [(parse_line,)]):
-        all_numbers.append(number)
+    all_numbers = [number for [number] in read_input(3, input, [(parse_line,)])]
 
     return get_rating(all_numbers, 'oxy') * get_rating(all_numbers, 'co2')
 
