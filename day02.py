@@ -1,10 +1,10 @@
-from lib.input import read_input
+from helper.input import read_input
 import sys
 
 def part1(input):
     forward = 0
     depth = 0
-    for command, distance in read_input(2, input, [str, int]):
+    for command, distance in read_input(2, input, [(str,), (int,)]):
         if command == 'forward':
             forward += distance
         elif command == 'down':
@@ -18,7 +18,7 @@ def part2(input):
     forward = 0
     depth = 0
     aim = 0
-    for command, amount in read_input(2, input, [str, int]):
+    for command, amount in read_input(2, input, [(str,), (int,)]):
         if command == 'forward':
             forward += amount
             depth += amount * aim
