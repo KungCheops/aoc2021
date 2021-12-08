@@ -47,8 +47,6 @@ def part2(input):
     sum = 0
     for line in read_input(8, input, [(str,)]):
         input, output = line
-        # print(f'input: {input}')
-        # print(f'output: {output}')
         segment = dict()
         segment_inverse = dict()
         items_by_length = defaultdict(list)
@@ -92,9 +90,6 @@ def part2(input):
         for i in range(7):
             segment_inverse[segment[i]] = i
 
-        # print(items_by_length)
-        # print(segment)
-        # print(segment_inverse)
         sum += int(''.join([str(convert_to_number(item, segment_inverse)) for item in output]))
 
     return sum
