@@ -22,10 +22,16 @@ def get_height(x, y, map):
 def lower_than_neighbors(height, x, y, map, ignore_coords=set(), strict=False):
     if height == 9:
         return False
-    c1 = ((x, y - 1) in ignore_coords or height <= get_height(x, y - 1, map))
-    c2 = ((x, y + 1) in ignore_coords or height <= get_height(x, y + 1, map))
-    c3 = ((x - 1, y) in ignore_coords or height <= get_height(x - 1, y, map))
-    c4 = ((x + 1, y) in ignore_coords or height <= get_height(x + 1, y, map))
+    if strict:
+        c1 = ((x, y - 1) in ignore_coords or height < get_height(x, y - 1, map))
+        c2 = ((x, y + 1) in ignore_coords or height < get_height(x, y + 1, map))
+        c3 = ((x - 1, y) in ignore_coords or height < get_height(x - 1, y, map))
+        c4 = ((x + 1, y) in ignore_coords or height < get_height(x + 1, y, map))
+    else:
+        c1 = ((x, y - 1) in ignore_coords or height <= get_height(x, y - 1, map))
+        c2 = ((x, y + 1) in ignore_coords or height <= get_height(x, y + 1, map))
+        c3 = ((x - 1, y) in ignore_coords or height <= get_height(x - 1, y, map))
+        c4 = ((x + 1, y) in ignore_coords or height <= get_height(x + 1, y, map))
     return c1 and c2 and c3 and c4
 
 
@@ -98,7 +104,6 @@ def part2(input):
 
 if __name__ == '__main__':
     _, part, input = sys.argv
-    np.set_printoptions(threshold=np.inf, linewidth=100000)
     if part == '1':
         print(part1(input))
     elif part == '2':
