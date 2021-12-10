@@ -20,3 +20,9 @@ def read_input(day, part, fun_and_args):
                 yield typed_split_line[0]
             else:
                 yield typed_split_line
+
+
+def read_input_simple(day, part):
+    with open(f'input/day{day:02d}_{part}.txt') as file:
+        for line in file:
+            yield line.strip()
