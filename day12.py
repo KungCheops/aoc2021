@@ -55,7 +55,7 @@ def print_paths(sub_paths, previous_steps=[]):
 
 def number_of_paths(input, sub_paths_method):
     graph = create_graph(input)
-    print(graph)
+    # print(graph)
     paths = sub_paths_method('start', graph)
     # print_paths(paths)
     return number_of_sub_paths(paths)
