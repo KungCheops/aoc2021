@@ -1,5 +1,7 @@
 from helper.input import read_input
 import sys
+import matplotlib.pyplot as plt
+import numpy as np
 
 
 def create_map(input):
@@ -60,6 +62,14 @@ def map_to_string(map, dimensions):
     return '\n'.join([''.join(['#' if (x, y) in map else '.' for x in range(dimensions[0])]) for y in range(dimensions[1])])
 
 
+def plot_map(map, dimensions):
+    to_print = np.zeros(dimensions).T
+    for x, y in map:
+        to_print[y][x] = 1
+    plt.imshow(to_print, interpolation='nearest')
+    plt.pause(1)
+
+
 def part1(input):
     map, dimensions = create_map(input)
     folds = get_folds(input)
@@ -69,9 +79,12 @@ def part1(input):
 
 def part2(input):
     map, dimensions = create_map(input)
+    plot_map(map, dimensions)
     folds = get_folds(input)
     for fold in folds:
         map, dimensions = fold_map(map, fold, dimensions)
+        plot_map(map, dimensions)
+    plt.show()
     return map_to_string(map, dimensions)
 
 
