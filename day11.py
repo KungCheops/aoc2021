@@ -1,6 +1,7 @@
 from helper.input import read_input
 import sys
 import numpy as np
+from matplotlib import pyplot as plt
 
 
 def create_map(input):
@@ -38,6 +39,7 @@ def part1(input, iterations):
 
 def part2(input):
     map = create_map(input)
+    plt.imshow(map, interpolation='nearest')
     i = 0
     time_per_iteration = []
     while True:
@@ -60,7 +62,11 @@ def part2(input):
             flash_spots = np.where(map > 9)
         map[np.where(map > 9)] = 0
         i += 1
+        plt.pause(0.1)
+        plt.imshow(map, interpolation='nearest')
+        plt.clear()
         if np.all(map == 0):
+            plt.show()
             return i
 
 
