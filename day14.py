@@ -29,9 +29,7 @@ def get_score(state, first_char, last_char):
     for [l, r], amount in state.items():
         number_of_chars[l] += amount
         number_of_chars[r] += amount
-    for key in number_of_chars:
-        number_of_chars[key] //= 2
-    return max(number_of_chars.values()) - min(number_of_chars.values())
+    return (max(number_of_chars.values()) - min(number_of_chars.values())) // 2
 
 
 def part1(input, iterations):
