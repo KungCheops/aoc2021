@@ -34,10 +34,8 @@ def get_score(state, first_char, last_char):
 
 def part1(input, iterations):
     state, first_char, last_char = create_state(input)
-    # print(state)
 
     mapping_table = create_mapping_table(input)
-    # print(mapping_table)
 
     for iteration in range(iterations):
         new_state = defaultdict(int)
@@ -47,7 +45,6 @@ def part1(input, iterations):
             new_state[new_pair_left] += instances
             new_state[new_pair_right] += instances
         state = new_state
-        # print(state)
 
     return get_score(state, first_char, last_char)
 
