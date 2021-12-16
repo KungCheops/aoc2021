@@ -67,7 +67,8 @@ def parse_packet2(binary_string):
     version = int(binary_string[0:3], 2)
     id = int(binary_string[3:6], 2)
     binary_string = binary_string[6:]
-    print('version:', version, 'id:', id)
+    # print('version:', version, 'id:', id)
+    # input()
 
     if id == 4:
         status_bit = '1'
@@ -77,7 +78,7 @@ def parse_packet2(binary_string):
             value_bits.append(binary_string[1:5])
             binary_string = binary_string[5:]
         value = int(''.join(value_bits), 2)
-        print('value:', value)
+        # print('value:', value)
         return value, binary_string
     else:
         if id == 0:
@@ -94,7 +95,7 @@ def parse_packet2(binary_string):
             operation = less_than
         elif id == 7:
             operation = equals_to
-        print('operation:', operation)
+        # print('operation:', operation)
         status_bit = binary_string[0]
         binary_string = binary_string[1:]
         if status_bit == '0':
@@ -105,7 +106,9 @@ def parse_packet2(binary_string):
             while len(sub_packet_binary_string) > 0:
                 value, sub_packet_binary_string = parse_packet2(sub_packet_binary_string)
                 values.append(value)
-            return operation(values), binary_string[length:]
+            value =  operation(values)
+            # print(f'performing operation {operation} on values: {values} yields {value}')
+            return value, binary_string[length:]
         elif status_bit == '1':
             number_of_sub_packets = int(binary_string[0:11], 2)
             binary_string = binary_string[11:]
@@ -113,19 +116,21 @@ def parse_packet2(binary_string):
             for i in range(number_of_sub_packets):
                 value, binary_string = parse_packet2(binary_string)
                 values.append(value)
-            return operation(values), binary_string
+            value =  operation(values)
+            # print(f'performing operation {operation} on values: {values} yields {value}')
+            return value, binary_string
 
 
-def part1(input):
-    for hex_string in read_input_simple(16, input):
+def part1(input_file):
+    for hex_string in read_input_simple(16, input_file):
         binary_string = convert_hex_to_binary(hex_string)
         print(parse_packet(binary_string))
 
     return
 
 
-def part2(input):
-    for hex_string in read_input_simple(16, input):
+def part2(input_file):
+    for hex_string in read_input_simple(16, input_file):
         binary_string = convert_hex_to_binary(hex_string)
         print(parse_packet2(binary_string))
 
@@ -133,10 +138,10 @@ def part2(input):
 
 
 if __name__ == '__main__':
-    _, part, input = sys.argv
+    _, part, input_file = sys.argv
     if part == '1':
-        print(part1(input))
+        print(part1(input_file))
     elif part == '2':
-        print(part2(input))
+        print(part2(input_file))
     else:
         print('Part must be one of 1 or 2')
