@@ -45,8 +45,8 @@ def part2(input):
 
     number_of_hits = 0
 
-    for y in range(-125, 1000):
-        for x in range(0, 233):
+    for y in range(ymin, -ymin):
+        for x in range(0, xmax + 1):
             # print(x, y)
             height = hits_target(x, y, (xmin, xmax, ymin, ymax))
             if height >= 0:
