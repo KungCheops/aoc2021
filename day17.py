@@ -30,9 +30,10 @@ def part1(input):
     [xmin, xmax, ymin, ymax] = map(int, list(read_input_simple(17, input))[0].split())
 
     max_height = 0
+    min_dx = int((math.sqrt(8 * (xmin - 1) + 1) + 1) // 2)
 
-    for y in range(0, 1000):
-        for x in range(0, 1000):
+    for y in range(ymin, -ymin):
+        for x in range(min_dx, xmax + 1):
             # print(x, y)
             height = hits_target(x, y, (xmin, xmax, ymin, ymax))
             if height > max_height:
