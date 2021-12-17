@@ -1,5 +1,6 @@
 from helper.input import read_input_simple
 import sys
+import math
 
 
 def hits_target(dx, dy, target_dimensions):
@@ -45,8 +46,10 @@ def part2(input):
 
     number_of_hits = 0
 
+    min_dx = int((math.sqrt(8 * (xmin - 1) + 1) + 1) // 2)
+
     for y in range(ymin, -ymin):
-        for x in range(0, xmax + 1):
+        for x in range(min_dx, xmax + 1):
             # print(x, y)
             height = hits_target(x, y, (xmin, xmax, ymin, ymax))
             if height >= 0:
