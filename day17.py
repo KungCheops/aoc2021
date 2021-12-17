@@ -11,7 +11,6 @@ def hits_target(dx, dy, target_dimensions):
 
     while y >= ymin and x <= xmax:
         if x >= xmin and x <= xmax and y >= ymin and y <= ymax:
-            # print('hit target at: ', x, y)
             return max_altitude_reached
         x += dx
         y += dy
@@ -34,7 +33,6 @@ def part1(input):
 
     for y in range(ymin, -ymin):
         for x in range(min_dx, xmax + 1):
-            # print(x, y)
             height = hits_target(x, y, (xmin, xmax, ymin, ymax))
             if height > max_height:
                 max_height = height
@@ -51,7 +49,6 @@ def part2(input):
 
     for y in range(ymin, -ymin):
         for x in range(min_dx, xmax + 1):
-            # print(x, y)
             height = hits_target(x, y, (xmin, xmax, ymin, ymax))
             if height >= 0:
                 number_of_hits += 1
