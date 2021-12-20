@@ -2,10 +2,6 @@ from helper.input import read_input_simple
 import sys
 
 
-class number:
-    # TODO
-
-
 def find_matching_comma_and_bracket(number_string):
     depth = 0
     comma_index = -1
@@ -28,33 +24,71 @@ def create_number(number_string):
         return int(number_string)
 
 
-
-def parse_number(number_string):
-    linear_representation = [int(num) for num in number_string if num.isnumeric()]
-    nested_representation = create_number(number_string)
-    return linear_representation, nested_representation
-
-
-def add_numbers(a, b):
-    a_linear, a_nested = a
-    b_linear, b_nested = b
-
-    return_linear = a_linear + b_linear
-    return_nested = (a_nested, b_nested) if a_nested else b_nested
-
-    return return_linear, return_nested
+def depth(tree):
+    if type(tree) == int:
+        return -1
+    else:
+        return 1 + max(depth(tree[0]), depth(tree[1]))
 
 
+class number:
+    def __init__(self, linear_representation, nested_representation):
+        self.linear_representation = linear_representation
+        self.nested_representation = nested_representation
+
+
+    @classmethod
+    def fromstring(cls, string):
+        linear_representation = [int(num) for num in string if num.isnumeric()]
+        nested_representation = create_number(string)
+        return cls(linear_representation, nested_representation)
+
+
+    def __repr__(self):
+        return self.linear_representation, self.nested_representation
+
+
+    @classmethod
+    def add(_, a, b):
+        a_linear, a_nested = a.linear_representation, a.nested_representation
+        b_linear, b_nested = b.linear_representation, b.nested_representation
+
+        return_linear = a_linear + b_linear
+        return_nested = (a_nested, b_nested)
+
+        return number(return_linear, return_nested)
+
+
+    def will_reduce(self):
+        max_depth = depth(self.nested_representation)
+        any_value_over_nine = any(value > 9 for value in self.linear_representation)
+        return max_depth > 4 or any_value_over_nine
+
+
+    def reduce(self):
+        if depth(self.nested_representation) > 4:
+            self.explode()
+        elif any(value > 9 for value in self.linear_representation):
+            self.split()
+
+
+    def explode(self):
+        return
 
 
 
 def part1(input):
-    sum_nested = None
-    sum_linear = []
+    sum = None
     for line in read_input_simple(18, input):
-        sum_linear, sum_nested = add_numbers((sum_linear, sum_nested), parse_number(line))
-        print(f'Sum (linear): {sum_linear}')
-        print(f'Sum (nested): {sum_nested}')
+        if sum is None:
+            sum = number.fromstring(line)
+        else:
+            sum = number.add(sum, number.fromstring(line))
+            print(sum.will_reduce())
+            # while sum.will_reduce():
+            #     sum = sum.reduce()
+        print(f'Sum (linear): {sum.linear_representation}')
+        print(f'Sum (nested): {sum.nested_representation}')
 
 
 def part2(input):
