@@ -54,14 +54,13 @@ def draw_image(image, minX, maxX, minY, maxY, padding=0):
                 draw_array[y - minY + padding][x - minX + padding] = 1
 
     plt.imshow(draw_array, interpolation='nearest')
-    plt.show()
+    plt.pause(0.1)
 
 
 def image_enhance(input, iterations):
     map = create_map(input)
     image, (minX, maxX, minY, maxY) = create_image(input)
-    # print(image_to_string(image, minX, maxX, minY, maxY))
-    draw_image(image, minX, maxX, minY, maxY, padding=5)
+    draw_image(image, minX, maxX, minY, maxY, padding=3)
 
     for i in range(iterations):
         new_image = set()
@@ -89,9 +88,8 @@ def image_enhance(input, iterations):
 
         image = new_image
         minX, maxX, minY, maxY = new_minX, new_maxX, new_minY, new_maxY
-        # print(image_to_string(image, minX, maxX, minY, maxY))
-        draw_image(image, minX, maxX, minY, maxY, padding=5)
-
+        draw_image(image, minX, maxX, minY, maxY, padding=3)
+    plt.show()
     return len(image)
 
 
@@ -99,15 +97,15 @@ def part1(input):
     return image_enhance(input, 2)
 
 
-def part2(input):
-    return image_enhance(input, 50)
+def part2(input, iterations):
+    return image_enhance(input, iterations)
 
 
 if __name__ == '__main__':
-    _, part, input = sys.argv
+    _, part, input, *iterations = sys.argv
     if part == '1':
         print(part1(input))
     elif part == '2':
-        print(part2(input))
+        print(part2(input, int(iterations[0])))
     else:
         print('Part must be one of 1 or 2')
