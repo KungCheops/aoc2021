@@ -2,6 +2,7 @@ from helper.input import read_input_simple
 import sys
 import numpy as np
 import matplotlib.pyplot as plt
+import time
 
 
 def create_map(input):
@@ -45,7 +46,7 @@ def image_to_string(image, minX, maxX, minY, maxY):
     return string
 
 
-def draw_image(image, minX, maxX, minY, maxY, padding=0):
+def image_to_nparray(image, minX, maxX, minY, maxY, padding=0):
     draw_array = np.zeros((maxY - minY + 1 + padding * 2, maxX - minX + 1 + padding * 2), dtype=int)
 
     for y in range(minY, maxY + 1):
@@ -53,14 +54,16 @@ def draw_image(image, minX, maxX, minY, maxY, padding=0):
             if (x, y) in image:
                 draw_array[y - minY + padding][x - minX + padding] = 1
 
-    plt.imshow(draw_array, interpolation='nearest')
-    plt.pause(0.1)
+    return draw_array
 
 
 def image_enhance(input, iterations):
     map = create_map(input)
     image, (minX, maxX, minY, maxY) = create_image(input)
-    draw_image(image, minX, maxX, minY, maxY, padding=3)
+    plt.ion()
+    figure, ax = plt.subplots(figsize=(10, 8))
+    data = image_to_nparray(image, minX, maxX, minY, maxY, padding=3)
+    line = plt.imshow(data, interpolation='nearest')
 
     for i in range(iterations):
         new_image = set()
@@ -88,7 +91,10 @@ def image_enhance(input, iterations):
 
         image = new_image
         minX, maxX, minY, maxY = new_minX, new_maxX, new_minY, new_maxY
-        draw_image(image, minX, maxX, minY, maxY, padding=3)
+        line.set_data(image_to_nparray(image, minX, maxX, minY, maxY, padding=3))
+        figure.canvas.draw()
+        figure.canvas.flush_events()
+        time.sleep(0.1)
     plt.show()
     return len(image)
 
