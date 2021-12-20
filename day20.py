@@ -45,13 +45,13 @@ def image_to_string(image, minX, maxX, minY, maxY):
     return string
 
 
-def draw_image(image, minX, maxX, minY, maxY):
-    draw_array = np.zeros((maxX - minX + 1, maxY - minY + 1), dtype=int)
+def draw_image(image, minX, maxX, minY, maxY, padding=0):
+    draw_array = np.zeros((maxY - minY + 1 + padding * 2, maxX - minX + 1 + padding * 2), dtype=int)
 
     for y in range(minY, maxY + 1):
         for x in range(minX, maxX + 1):
             if (x, y) in image:
-                draw_array[y - minY][x - minX] = 1
+                draw_array[y - minY + padding][x - minX + padding] = 1
 
     plt.imshow(draw_array, interpolation='nearest')
     plt.show()
@@ -60,11 +60,12 @@ def draw_image(image, minX, maxX, minY, maxY):
 def image_enhance(input, iterations):
     map = create_map(input)
     image, (minX, maxX, minY, maxY) = create_image(input)
-    print(image_to_string(image, minX, maxX, minY, maxY))
-    draw_image(image, minX - 10, maxX + 10, minY - 10, maxY + 10)
+    # print(image_to_string(image, minX, maxX, minY, maxY))
+    draw_image(image, minX, maxX, minY, maxY, padding=5)
 
     for i in range(iterations):
         new_image = set()
+        new_minX, new_maxX, new_minY, new_maxY = 0, 0, 0, 0
         if i % 2 == 0:
             y_range = range(minY - 3, maxY + 4)
             x_range = range(minX - 3, maxX + 4)
@@ -75,14 +76,21 @@ def image_enhance(input, iterations):
             for x in x_range:
                 if map[get_value(x, y, image)] == 1:
                     new_image.add((x, y))
+                    if i % 2 == 1 or x >= minX - 1 and x <= maxX + 1:
+                        if x < new_minX:
+                            new_minX = x
+                        if x > new_maxX:
+                            new_maxX = x
+                    if i % 2 == 1 or y >= minY - 1 and y <= maxY + 1:
+                        if y < new_minY:
+                            new_minY = y
+                        if y > new_maxY:
+                            new_maxY = y
+
         image = new_image
-        # minX, maxX, minY, maxY = new_minX, new_maxX, new_minY, new_maxY
-        minX -= 1
-        maxX += 1
-        minY -= 1
-        maxY += 1
-        print(image_to_string(image, minX, maxX, minY, maxY))
-        draw_image(image, minX - 10, maxX + 10, minY - 10, maxY + 10)
+        minX, maxX, minY, maxY = new_minX, new_maxX, new_minY, new_maxY
+        # print(image_to_string(image, minX, maxX, minY, maxY))
+        draw_image(image, minX, maxX, minY, maxY, padding=5)
 
     return len(image)
 
